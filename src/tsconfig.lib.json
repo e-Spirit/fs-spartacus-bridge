@@ -1,0 +1,20 @@
+{
+  "extends": "./../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./../out-tsc/lib"
+  },
+  "files": ["./public-api.ts", "./types.ts", "./typings.d.ts"],
+  "include": ["lib/**/*.ts", "lib/fs/cms/page/tpp-loader.js"],
+  "exclude": [
+    "**/test.ts",
+    "**/*.spec.ts",
+    "**/*.spec.data.ts",
+    "**/node_modules",
+    "**/dist",
+    "**/.gradle",
+    "**/coverage",
+    "**/gradle",
+    "**/test-reports",
+    "**/.git"
+  ]
+}

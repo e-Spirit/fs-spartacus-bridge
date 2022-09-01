@@ -1,0 +1,165 @@
+.fs-content-connect-slot {
+  position: relative;
+}
+
+.fs-content-connect-editing-container {
+  min-height: 6rem;
+}
+
+.fs-editing {
+  height: 100%;
+}
+
+.fs-content-connect-editing-container .fs-content-connect-button-container {
+  width: 100%;
+  position: absolute;
+  top: 50%;
+  z-index: 1000;
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+.fs-content-connect-content-container {
+  display: flex;
+  flex-wrap: wrap;
+  height: 100%;
+}
+
+.fs-content-connect-editing-container .fs-content-connect-content-container {
+  filter: contrast(50%);
+}
+.fs-content-connect-editing-container .fs-content-connect-content-container::after {
+  display: block;
+  clear: both;
+  content: '';
+}
+.fs-content-connect-editing-container:hover .fs-content-connect-content-container {
+  filter: contrast(70%);
+  transition: all 0.2s ease-in-out;
+}
+@media screen and (prefers-reduced-motion: reduce) {
+  .fs-content-connect-editing-container:hover .fs-content-connect-content-container {
+    transition: none;
+  }
+}
+.fs-content-connect-editing-container.fs-content-connect-highlight-content-area {
+  border: 0.15rem transparent solid;
+}
+.fs-content-connect-editing-container.fs-content-connect-highlight-content-area:hover {
+  background-color: rgba(108, 117, 125, 0.3);
+}
+.fs-content-connect-editing-container.fs-content-connect-highlight-content-area .fs-content-connect-button-container {
+  position: relative;
+  top: 0;
+  transform: translateY(0%);
+}
+.fs-content-connect-editing-container .fs-content-connect-editing-button {
+  display: block;
+  width: auto;
+  min-height: 3.9rem;
+  min-width: 3.9rem;
+  margin: 1rem auto;
+  position: relative;
+  top: 50%;
+  color: #fff;
+  font-size: 2.25rem;
+  font-family: 'Helvetica Neue', Arial, Helvetica, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  font-weight: 300;
+  background-color: #3288c3;
+  border-radius: 3.65rem;
+  border: 0.15rem #3288c3 solid;
+  -webkit-user-select: none;
+  /* Safari */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* IE10+/Edge */
+  user-select: none;
+  /* Standard */
+}
+.fs-content-connect-editing-container .fs-content-connect-editing-button .fs-content-connect-icon {
+  color: #fff;
+  margin-top: -0.3rem;
+  box-sizing: border-box;
+  display: inline-block;
+  height: 1em;
+  width: 1em;
+  position: relative;
+  font-size: inherit;
+  font-style: normal;
+  text-indent: -9999px;
+  vertical-align: middle;
+}
+.fs-content-connect-editing-container .fs-content-connect-editing-button .fs-content-connect-icon::before,
+.fs-content-connect-editing-container .fs-content-connect-editing-button .fs-content-connect-icon::after {
+  display: block;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.fs-content-connect-editing-container .fs-content-connect-editing-button .fs-content-connect-icon.fs-content-connect-icon-add::before {
+  content: '';
+  background: currentColor;
+  height: 0.2rem;
+  width: 100%;
+  transform: translate(-50%, -50%);
+}
+.fs-content-connect-editing-container .fs-content-connect-editing-button .fs-content-connect-icon.fs-content-connect-icon-add::after {
+  content: '';
+  background: currentColor;
+  height: 100%;
+  width: 0.2rem;
+  transform: translate(-50%, -50%);
+}
+.fs-content-connect-editing-container .fs-content-connect-editing-button .fs-content-connect-button-label {
+  display: inline-block;
+  max-width: 0;
+  opacity: 0;
+  white-space: nowrap;
+  transition: 1s, opacity 0.2s;
+}
+@media screen and (prefers-reduced-motion: reduce) {
+  .fs-content-connect-editing-container .fs-content-connect-editing-button .fs-content-connect-button-label {
+    transition: none;
+  }
+}
+.fs-content-connect-editing-container .fs-content-connect-editing-button:hover {
+  background-color: #266895;
+  border-color: #266895;
+}
+.fs-content-connect-editing-container
+  .fs-content-connect-button-container:hover
+  .fs-content-connect-editing-button
+  .fs-content-connect-button-label {
+  opacity: 1;
+  padding: 0 0.8rem;
+  max-width: 50rem;
+  transition: max-width 2s ease-out 0.1s, opacity 1s ease-out 0.5s;
+}
+@media screen and (prefers-reduced-motion: reduce) {
+  .fs-content-connect-editing-container .fs-content-connect-editing-button .fs-content-connect-button-label:hover {
+    transition: none;
+  }
+}
+
+.fs-container-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgb(108, 117, 125);
+  opacity: 0.45;
+}
+
+.fs-content-connect-slot:hover .fs-container-overlay {
+  opacity: 0.3;
+  transition: opacity 0.2s ease-in-out;
+}
+
+@media screen and (prefers-reduced-motion: reduce) {
+  .fs-content-connect-slot:hover .fs-container-overlay {
+    transition: none;
+  }
+}

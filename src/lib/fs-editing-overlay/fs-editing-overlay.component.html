@@ -1,0 +1,24 @@
+<ng-container *ngIf="components$ | async">
+  <div
+    #fsContainer
+    class="fs-content-connect-slot
+              fs-content-connect-editing-container
+              fs-editing
+
+              {{ (components$ | async).length <= 0 ? 'fs-content-connect-highlight-content-area' : '' }}"
+    data-fs-content-editing
+  >
+    <div class="fs-container-overlay"></div>
+    <div class="fs-content-connect-button-container">
+      <button class="fs-content-connect-editing-button" [disabled]="isButtonDisabled" (click)="addContent()">
+        <span class="fs-content-connect-icon fs-content-connect-icon-add"></span>
+        <span class="fs-content-connect-button-label">{{ (components$ | async).length > 0 ? 'override content' : 'add content' }}</span>
+      </button>
+    </div>
+    <div class="fs-content-connect-content-container">
+      <ng-container *ngFor="let component of components$ | async">
+        <ng-template [cxOutlet]="component.flexType" [cxOutletContext]="{}" [cxComponentWrapper]="component"> </ng-template>
+      </ng-container>
+    </div>
+  </div>
+</ng-container>

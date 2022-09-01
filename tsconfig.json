@@ -1,0 +1,45 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "declaration": true,
+    "inlineSources": false,
+    "downlevelIteration": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "noUnusedLocals": true,
+    "strictBindCallApply": true,
+    "strictFunctionTypes": true,
+    "module": "es2020",
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "target": "ES2015",
+    "typeRoots": ["./node_modules/@types"],
+    "lib": ["esnext", "dom"],
+    "paths": {
+      "@angular/*": ["./node_modules/@angular/*"],
+      "@spartacus/*": ["./node_modules/@spartacus/*"],
+      "fs-spartacus-common/*": ["./node_modules/fs-spartacus-common/*"]
+    }
+  },
+  "angularCompilerOptions": {
+    "fullTemplateTypeCheck": true,
+    "strictInjectionParameters": true,
+    "generateCodeForLibraries": true,
+    "strictTemplates": true,
+    "skipTemplateCodegen": true,
+    "enableIvy": true,
+    "compilationMode": "partial",
+    "enableResourceInlining": true,
+    "sideEffects": false,
+    "inlineSources": true,
+    "skipMetadataEmit": true,
+    "annotateForClosureCompiler": true,
+    "flatModuleOutFile": true,
+    "flatModuleId": "fs-spartacus-bridge"
+  }
+}

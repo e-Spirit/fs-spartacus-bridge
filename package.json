@@ -1,0 +1,118 @@
+{
+  "name": "fs-spartacus-bridge",
+  "version": "4.0.16",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "test": "ng test",
+    "format": "prettier --write \"./**/*.{ts,js,json,css,scss,html}\"",
+    "format:check": "prettier --config ./.prettierrc --list-different \"{src,projects}/**/*.{ts,js,json,css,scss,html}\"",
+    "uglify-dist": "node ./build-scripts/uglify.js ./dist/fs-spartacus-bridge --source-map",
+    "lint": "ng lint",
+    "lint:staged": "lint-staged -r -v",
+    "e2e": "ng e2e",
+    "compodoc": "npx compodoc -p src/tsconfig.doc.json --disableGraph --disableCoverage"
+  },
+  "private": true,
+  "dependencies": {
+    "@ng-bootstrap/ng-bootstrap": "10.0.0",
+    "@ng-select/ng-select": "7.2.0",
+    "@ngrx/effects": "12.4.0",
+    "@ngrx/router-store": "12.4.0",
+    "@ngrx/store": "12.4.0",
+    "bootstrap": "4.5.2",
+    "express": "4.17.1",
+    "i18next": "20.6.0",
+    "i18next-http-backend": "^1.2.2",
+    "i18next-xhr-backend": "3.2.2",
+    "immutable": "4.0.0-rc.12",
+    "jquery": "3.6.0",
+    "ngx-infinite-scroll": "8.0.2",
+    "popper.js": "1.16.1",
+    "rxjs": "6.6.7",
+    "tslib": "^2.3.1",
+    "zone.js": "~0.11.4"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "12.2.3",
+    "@angular-devkit/core": "12.2.3",
+    "@angular-devkit/schematics": "12.2.3",
+    "@angular/animations": "12.2.3",
+    "@angular/cli": "12.2.3",
+    "@angular/common": "12.2.3",
+    "@angular/compiler": "12.2.3",
+    "@angular/compiler-cli": "12.2.3",
+    "@angular/core": "12.2.3",
+    "@angular/forms": "12.2.3",
+    "@angular/language-service": "12.2.3",
+    "@angular/localize": "12.2.3",
+    "@angular/platform-browser": "12.2.3",
+    "@angular/platform-browser-dynamic": "12.2.3",
+    "@angular/platform-server": "12.2.3",
+    "@angular/router": "12.2.3",
+    "@angular/service-worker": "12.2.3",
+    "@babel/core": "^7.16.0",
+    "@compodoc/compodoc": "^1.1.16",
+    "@nguniversal/express-engine": "12.1.0",
+    "@schematics/angular": "12.2.3",
+    "@spartacus/core": "4.0.1",
+    "@spartacus/schematics": "4.0.1",
+    "@spartacus/storefront": "4.0.1",
+    "@spartacus/styles": "4.0.1",
+    "@types/jasmine": "~3.6.0",
+    "@types/jasminewd2": "2.0.8",
+    "@types/node": "12.20.11",
+    "angular-oauth2-oidc": "10.0.3",
+    "codelyzer": "^6.0.0",
+    "command-line-args": "5.1.1",
+    "fs-extra": "^10.0.0",
+    "fs-spartacus-common": "^4.0.3",
+    "husky": "6.0.0",
+    "jasmine-core": "~3.6.0",
+    "jasmine-spec-reporter": "~5.0.0",
+    "karma": "6.3.2",
+    "karma-chrome-launcher": "~3.1.0",
+    "karma-coverage-istanbul-reporter": "3.0.3",
+    "karma-jasmine": "~4.0.0",
+    "karma-jasmine-html-reporter": "^1.5.0",
+    "karma-junit-reporter": "2.0.1",
+    "lint-staged": "10.5.4",
+    "ng-packagr": "12.2.1",
+    "parse5": "6.0.1",
+    "postcss": "^8.3.11",
+    "prettier": "2.2.1",
+    "protractor": "7.0.0",
+    "puppeteer": "9.1.0",
+    "rollup": "2.47.0",
+    "stylelint": "13.13.1",
+    "terser": "5.7.0",
+    "ts-node": "10.4.0",
+    "tsickle": "0.43.0",
+    "tslint": "6.1.3",
+    "tslint-config-prettier": "1.18.0",
+    "tslint-etc": "1.13.9",
+    "tsutils": "3.21.0",
+    "typescript": "4.3.5"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "post-commit": "git update-index --again"
+    }
+  },
+  "lint-staged": {
+    "*.ts": [
+      "tslint -c ./tslint.json -p ./src/tsconfig.commit.json --fix"
+    ],
+    "*.css": [
+      "stylelint"
+    ],
+    "*.scss": [
+      "stylelint --syntax=scss"
+    ],
+    "*.{js,ts,json,scss,css,html}": [
+      "prettier --write"
+    ]
+  }
+}

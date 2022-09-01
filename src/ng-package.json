@@ -1,0 +1,16 @@
+{
+  "$schema": "./../node_modules/ng-packagr/ng-package.schema.json",
+  "dest": "./../dist/fs-spartacus-bridge",
+  "assets": ["./styles/_index.scss"],
+  "lib": {
+    "umdModuleIds": {
+      "@spartacus/core": "core",
+      "immutable": "immutable",
+      "fs-tpp-api/snap": "TPP_SNAP",
+      "@spartacus/storefront": "storefront",
+      "fs-spartacus-common": "fs-spartacus-common"
+    },
+    "entryFile": "./public-api.ts"
+  },
+  "allowedNonPeerDependencies": ["immutable"]
+}
