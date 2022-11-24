@@ -78,7 +78,8 @@ export class TppWrapperService {
 
   async createPage(path: string, uid: string, template: string, options?: CreatePageOptions): Promise<CreatePageResult | void> {
     const snap = await this.TPP_SNAP;
-    return snap?.createPage(path, uid, template, options);
+    const uidLowerCase = uid.toLocaleLowerCase();
+    return snap?.createPage(path, uidLowerCase, template, options);
   }
 
   async onRerenderView(handler: () => void): Promise<void> {

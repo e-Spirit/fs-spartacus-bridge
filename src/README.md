@@ -5,7 +5,7 @@ It is the main component of our spartacus integration.
 
 ## Author
 
-[e-Spirit AG](https://www.e-spirit.com)
+[Crownpeak Technology GmbH](https://www.crownpeak.com)
 
 ## License
 

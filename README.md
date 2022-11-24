@@ -6,7 +6,7 @@ For more information consult the [offical documentation](https://docs.e-spirit.c
 
 ## Author
 
-[e-Spirit AG](https://www.e-spirit.com)
+[Crownpeak Technology GmbH](https://www.crownpeak.com)
 
 ## License
 

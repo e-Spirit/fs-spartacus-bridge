@@ -79,7 +79,7 @@ export class FsEditingOverlayComponent implements OnDestroy {
       const pageData = extractPageUniqueId(routerState.state.context);
       if (pageData != null) {
         return this.previewService
-          .createPage(pageData.pageId?.toLocaleLowerCase(), page.template, routerState.state.context.type)
+          .createPage(pageData.pageId, page.template, routerState.state.context.type)
           .catch((createPageError) => {
             this.previewService.showDetailedErrorDialog(TranslationKey.CREATE_PAGE_UNEXPECTED_ERROR, {
               errorMessage: errorToString(createPageError),
