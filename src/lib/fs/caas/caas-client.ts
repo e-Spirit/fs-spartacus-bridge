@@ -34,7 +34,7 @@ export class CaasClient {
     return this.httpClient
       .get(this.collectionUrl, {
         headers: {
-          Authorization: `apikey="${this.caasCollection.apiKey}"`,
+          Authorization: `Bearer ${this.caasCollection.apiKey}`,
         },
         params: {
           filter: `{'$or':[
@@ -56,25 +56,19 @@ export class CaasClient {
   /**
    * This method gets the sections included in the given page.
    *
-   * @param {string} uid The UID of the page.
+   * @param {string} identifier The identifier of the page.
    * @param {string} language The language to get the sections for.
-   * @param {string} [altName] The alternative name to search for.
    * @return {Observable<any>} The sections of the requested page.
    * @memberof CaasClient
    */
-  getPageSections(uid: string, language: string, altName?: string): Observable<any> {
-    altName = typeof altName === 'string' && altName.trim().length > 0 ? altName : undefined;
+  getPageSections(identifier: string, language: string): Observable<any> {
     return this.httpClient
       .get(this.collectionUrl, {
         headers: {
-          Authorization: `apikey="${this.caasCollection.apiKey}"`,
+          Authorization: `Bearer ${this.caasCollection.apiKey}`,
         },
         params: {
-          filter: `{'$or':[
-            {'$and':[{'$or':[{'uid':'${uid}'},{'uid':'${uid?.toLocaleLowerCase()}'}]},{'locale.language':'${language}'}]},
-            {'page.formData.pt_seoUrl.value':'${altName || uid}'},
-            {'page.formData.pt_seoUrl.value':'${altName || uid?.toLocaleLowerCase()}'}
-          ]}`,
+          filter: `{'$and':[{'page.identifier':'${identifier}'}, {'locale.language':'${language}'}]}`,
           rep: 's',
           keys: `{'page.children.children':1}`,
         },
@@ -99,7 +93,7 @@ export class CaasClient {
     return this.httpClient
       .get(this.collectionUrl, {
         headers: {
-          Authorization: `apikey="${this.caasCollection.apiKey}"`,
+          Authorization: `Bearer ${this.caasCollection.apiKey}`,
         },
         params: {
           filter: `{'_id':{'$in':[${ids?.join(',')}]}}`,

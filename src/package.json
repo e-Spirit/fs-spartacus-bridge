@@ -1,6 +1,6 @@
 {
   "name": "fs-spartacus-bridge",
-  "version": "4.0.17",
+  "version": "4.0.18",
   "description": "Angular library that provides means to integrate cms data from the FirstSpirit CaaS into the SAP Commerce Cloud Spartacus storefront and manipulate it with FirstSpirit's Omnichannel Manager.",
   "dependencies": {
     "immutable": "^4.0.0-rc.12",

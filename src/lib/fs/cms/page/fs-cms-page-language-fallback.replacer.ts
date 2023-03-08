@@ -105,7 +105,7 @@ export class FsCmsPageLanguageFallbackReplacer implements Converter<FsCmsPageInt
   private performFallbackRequest(caasClientObservable: Observable<CaasClient>) {
     return caasClientObservable.pipe(
       map((caasClient) =>
-        this.identifier2ObjectMap.size > 0 ? caasClient.getPageSections(this.source.page.name, this.fallbackLanguage) : of(undefined)
+        this.identifier2ObjectMap.size > 0 ? caasClient.getPageSections(this.source.page?.identifier, this.fallbackLanguage) : of(undefined)
       ),
       switchAll(),
       map((caasResponse) => this.findSectionsInCaasResponse(caasResponse)),

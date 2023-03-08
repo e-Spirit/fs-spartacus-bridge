@@ -70,7 +70,7 @@ describe('FsCmsPageLanguageFallbackReplacer', () => {
     const converters = TestBed.inject(FS_CMS_PAGE_LANGUAGE_FALLBACK_REPLACER);
     const convertResult$ = converters[0].convert(testDataA);
     convertResult$.subscribe((_convertedResult) => {
-      expect(caasClient.getPageSections).toHaveBeenCalledWith('__homepage__', 'en');
+      expect(caasClient.getPageSections).toHaveBeenCalledWith('83388b06-3e10-486d-8623-4bfdbdd0968b', 'en');
       done();
     });
   });

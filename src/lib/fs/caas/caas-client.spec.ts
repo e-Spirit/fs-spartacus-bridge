@@ -88,7 +88,7 @@ describe('CaasService', () => {
 
   it('should add the authorization header', () => {
     const testRequest = performTestRequest();
-    expect(testRequest.request.headers.get('Authorization')).toEqual(`apikey="${caasCollectionAccessData.apiKey}"`);
+    expect(testRequest.request.headers.get('Authorization')).toEqual(`Bearer ${caasCollectionAccessData.apiKey}`);
   });
 
   it('should handle an 404 error', () => {
