@@ -6,9 +6,11 @@ import { SNAP } from './fs-tpp-api.data';
   providedIn: 'root',
 })
 export class TppLoaderService {
-  private TPP_SNAP_PROMISE: Promise<SNAP> = this.loadTPP();
+  private TPP_SNAP_PROMISE: Promise<SNAP>;
 
-  constructor(@Inject(PLATFORM_ID) private platformId: string) {}
+  constructor(@Inject(PLATFORM_ID) private platformId: string) {
+    this.TPP_SNAP_PROMISE = this.loadTPP();
+  }
 
   async getSnap(): Promise<SNAP> | null {
     if (isPlatformBrowser(this.platformId)) {
@@ -18,7 +20,7 @@ export class TppLoaderService {
 
   private async loadTPP(): Promise<SNAP> | null {
     if (isPlatformBrowser(this.platformId)) {
-      // tslint:disable
+      /* eslint-disable */
       return new Promise((resolve, reject) => {
         window.addEventListener('message', function awaitTppPong({ origin, data }) {
           if (typeof data === 'object' && 'tpp' in data && data.tpp._response && data.tpp._response.version) {

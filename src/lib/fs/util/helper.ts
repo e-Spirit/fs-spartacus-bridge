@@ -129,6 +129,8 @@ export function createCaasAccessData(config: FsSpartacusBridgeConfig, baseSite: 
     config.bridge[baseSite].caas.tenantId,
     config.bridge[baseSite].caas.project,
     isPreview ? CaasCollection.PREVIEW_CONTENT : CaasCollection.RELEASE_CONTENT,
-    config.bridge[baseSite].caas.apiKey
+    isPreview && config.bridge[baseSite].caas.apiKeyPreview
+      ? config.bridge[baseSite].caas.apiKeyPreview
+      : config.bridge[baseSite].caas.apiKey
   );
 }

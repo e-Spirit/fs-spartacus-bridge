@@ -26,11 +26,12 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tslintConfig": "tslint.json",
-            "tsConfig": ["./src/tsconfig.lib.json", "./src/tsconfig.spec.json"],
-            "exclude": ["**/dist", "**/.gradle", "**/coverage", "**/gradle", "**/test-reports", "**/.git", "**/node_modules/"]
+            "lintFilePatterns": [
+              "./src/**/*.ts",
+              "./src/**/*.html"
+            ]
           }
         }
       }
@@ -38,6 +39,9 @@
   },
   "defaultProject": "fs-spartacus-bridge",
   "cli": {
-    "analytics": false
+    "analytics": false,
+    "schematicCollections": [
+      "@angular-eslint/schematics"
+    ]
   }
 }

@@ -15,41 +15,40 @@ import { FsSpartacusBridgeConfig, FsSpartacusCommonModule } from 'fs-spartacus-c
  * {@link FsCmsPageModule} and sets up the error handlers
  */
 @NgModule({
-  declarations: [FsEditingOverlayComponent, FsEditingAreaComponent],
-  imports: [
-    FsSpartacusCommonModule,
-    CommonModule,
-    FsCmsPageModule,
-    ConfigModule.withConfig({
-      cmsComponents: {
-        FsEditingOverlay: {
-          component: FsEditingOverlayComponent,
+    declarations: [FsEditingOverlayComponent, FsEditingAreaComponent],
+    imports: [
+        FsSpartacusCommonModule,
+        CommonModule,
+        FsCmsPageModule,
+        ConfigModule.withConfig({
+            cmsComponents: {
+                FsEditingOverlay: {
+                    component: FsEditingOverlayComponent,
+                },
+                FsEditingArea: {
+                    component: FsEditingAreaComponent,
+                },
+            },
+        } as CmsConfig),
+        PageComponentModule,
+        OutletModule,
+    ],
+    providers: [
+        {
+            provide: HttpErrorHandler,
+            useClass: CaasForbiddenHandler,
+            multi: true,
         },
-        FsEditingArea: {
-          component: FsEditingAreaComponent,
+        {
+            provide: HttpErrorHandler,
+            useClass: CaasUnauthorizedHandler,
+            multi: true,
         },
-      },
-    } as CmsConfig),
-    PageComponentModule,
-    OutletModule,
-  ],
-  providers: [
-    {
-      provide: HttpErrorHandler,
-      useClass: CaasForbiddenHandler,
-      multi: true,
-    },
-    {
-      provide: HttpErrorHandler,
-      useClass: CaasUnauthorizedHandler,
-      multi: true,
-    },
-    provideConfig({
-      i18n: { resources: translations },
-    }),
-  ],
-  exports: [FsEditingOverlayComponent, FsEditingAreaComponent],
-  entryComponents: [FsEditingOverlayComponent, FsEditingAreaComponent],
+        provideConfig({
+            i18n: { resources: translations },
+        }),
+    ],
+    exports: [FsEditingOverlayComponent, FsEditingAreaComponent]
 })
 export class FsSpartacusBridgeModule {
   static withConfig(config: FsSpartacusBridgeConfig): ModuleWithProviders<FsSpartacusBridgeModule> {

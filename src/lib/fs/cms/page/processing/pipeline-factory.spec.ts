@@ -13,7 +13,7 @@ describe('PipelineFactory', () => {
       const pipelineFactory = new PipelineFactory(injector, tppStatusService);
       pipelineFactory.createPipeline().subscribe(() => {
         // linter needs to be disabled since this is not really a use of a deprecated feature
-        // tslint:disable-next-line: deprecation
+        // eslint-disable-next-line import/no-deprecated
         expect(injector.get).toHaveBeenCalledWith(PREVIEW_PIPELINE_STEP);
         done();
       });
@@ -24,7 +24,7 @@ describe('PipelineFactory', () => {
       const pipelineFactory = new PipelineFactory(injector, tppStatusService);
       pipelineFactory.createPipeline().subscribe(() => {
         // linter needs to be disabled since this is not really a use of a deprecated feature
-        // tslint:disable-next-line: deprecation
+        // eslint-disable-next-line import/no-deprecated
         expect(injector.get).toHaveBeenCalledWith(LIVE_PIPELINE_STEP);
         done();
       });

@@ -3,7 +3,7 @@ import { FsSpartacusBridgeModule } from '../../fs-spartacus-bridge.module';
 import { TestBed } from '@angular/core/testing';
 
 import { ConfigModule } from '@spartacus/core';
-import { getFsManagedPageConfigByTemplateId, findDocumentsInCaasResponse, reExecutable } from './helper';
+import { getFsManagedPageConfigByTemplateId, findDocumentsInCaasResponse, reExecutable, createCaasAccessData } from './helper';
 import { FirstSpiritManagedPage, FsSpartacusBridgeConfig } from 'fs-spartacus-common';
 import { iif, throwError, of, Observable } from 'rxjs';
 import { switchMap, first } from 'rxjs/operators';
@@ -152,6 +152,65 @@ describe('Helper', () => {
       const unaryResult2 = await toPromise(unaryHof2('unary-call'));
       expect(unaryResult2).toBeUndefined();
       done();
+    });
+  });
+  describe('createCaasAccessData', () => {
+    it('uses preview key if in preview', () => {
+      const baseSite = 'BASESITE';
+      const config: FsSpartacusBridgeConfig = {
+        bridge: {
+          [baseSite]: {
+            caas: {
+              baseUrl: 'SPARTACUS_CAAS_URL',
+              project: 'SPARTACUS_CAAS_PROJECT',
+              apiKey: 'SPARTACUS_CAAS_API_KEY',
+              apiKeyPreview: 'SPARTACUS_CAAS_API_KEY_PREVIEW',
+              tenantId: 'SPARTACUS_CAAS_TENANT_ID',
+            },
+          },
+        },
+      };
+      const result = createCaasAccessData(config, baseSite, true);
+
+      expect(result.apiKey).toEqual(config.bridge[baseSite].caas.apiKeyPreview);
+    });
+    it('uses release key if in preview but no preview key present', () => {
+      const baseSite = 'BASESITE';
+      const config: FsSpartacusBridgeConfig = {
+        bridge: {
+          [baseSite]: {
+            caas: {
+              baseUrl: 'SPARTACUS_CAAS_URL',
+              project: 'SPARTACUS_CAAS_PROJECT',
+              apiKey: 'SPARTACUS_CAAS_API_KEY',
+              apiKeyPreview: undefined,
+              tenantId: 'SPARTACUS_CAAS_TENANT_ID',
+            },
+          },
+        },
+      };
+      const result = createCaasAccessData(config, baseSite, true);
+
+      expect(result.apiKey).toEqual(config.bridge[baseSite].caas.apiKey);
+    });
+    it('uses release key if not in preview', () => {
+      const baseSite = 'BASESITE';
+      const config: FsSpartacusBridgeConfig = {
+        bridge: {
+          [baseSite]: {
+            caas: {
+              baseUrl: 'SPARTACUS_CAAS_URL',
+              project: 'SPARTACUS_CAAS_PROJECT',
+              apiKey: 'SPARTACUS_CAAS_API_KEY',
+              apiKeyPreview: 'SPARTACUS_CAAS_API_KEY_PREVIEW',
+              tenantId: 'SPARTACUS_CAAS_TENANT_ID',
+            },
+          },
+        },
+      };
+      const result = createCaasAccessData(config, baseSite, false);
+
+      expect(result.apiKey).toEqual(config.bridge[baseSite].caas.apiKey);
     });
   });
 });

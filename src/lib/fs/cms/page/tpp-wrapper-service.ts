@@ -20,9 +20,11 @@ export interface PageTypeMappingResult {
   providedIn: 'root',
 })
 export class TppWrapperService {
-  private TPP_SNAP = this.tppLoaderService.getSnap();
+  private TPP_SNAP: any;
 
-  constructor(private tppLoaderService: TppLoaderService) {}
+  constructor(private tppLoaderService: TppLoaderService) {
+    this.TPP_SNAP = this.tppLoaderService.getSnap();
+  }
 
   async getFsPageTypeMapping(pageType: string, pageTemplate: string): Promise<PageTypeMappingResult | undefined> {
     console.log(`Execute the script 'page_type_mapping' with the parameters pageType = '${pageType}' and pageTemplate = '${pageTemplate}'`);

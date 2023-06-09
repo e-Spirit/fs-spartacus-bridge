@@ -7,6 +7,4 @@ import { Component } from '@angular/core';
 })
 export class FsEditingAreaComponent {
   static readonly TYPE_CODE = 'FsEditingArea';
-
-  constructor() {}
 }

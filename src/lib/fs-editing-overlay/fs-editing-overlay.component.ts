@@ -22,6 +22,7 @@ export class FsEditingOverlayComponent implements OnDestroy {
   static readonly TYPE_CODE = 'FsEditingOverlay';
   isButtonDisabled = false;
   private subs$ = new Subscription();
+  components$: Observable<any[]>;
 
   constructor(
     private componentData: CmsComponentData<FsEditingOverlay>,
@@ -30,23 +31,23 @@ export class FsEditingOverlayComponent implements OnDestroy {
     private previewService: PreviewService,
     private routingService: RoutingService,
     private changeDetectorRef: ChangeDetectorRef
-  ) {}
-
-  // components$ and getComponentDataWithFlexType were copied from 'tab-paragraph-container.component.ts'
-  // in the Spartacus storefrontlib.
-  components$: Observable<any[]> = this.componentData.data$.pipe(
-    switchMap((data) =>
-      combineLatest([
-        data != null
-          ? data.components
-              .split(',')
-              .map((component) => component.trim())
-              .filter((component) => '' !== component)
-              .map((component) => this.getComponentDataWithFlexType(component))
-          : of([]),
-      ])
-    )
-  );
+  ) {
+    // components$ and getComponentDataWithFlexType were copied from 'tab-paragraph-container.component.ts'
+    // in the Spartacus storefrontlib.
+    this.components$ = this.componentData.data$.pipe(
+      switchMap((data) =>
+        combineLatest([
+          data != null
+            ? data.components
+                .split(',')
+                .map((component) => component.trim())
+                .filter((component) => '' !== component)
+                .map((component) => this.getComponentDataWithFlexType(component))
+            : of([]),
+        ])
+      )
+    );
+  }
 
   ngOnDestroy(): void {
     if (this.subs$) {
@@ -78,13 +79,11 @@ export class FsEditingOverlayComponent implements OnDestroy {
     if (page != null && routerState != null && routerState.state != null && routerState.state.context != null) {
       const pageData = extractPageUniqueId(routerState.state.context);
       if (pageData != null) {
-        return this.previewService
-          .createPage(pageData.pageId, page.template, routerState.state.context.type)
-          .catch((createPageError) => {
-            this.previewService.showDetailedErrorDialog(TranslationKey.CREATE_PAGE_UNEXPECTED_ERROR, {
-              errorMessage: errorToString(createPageError),
-            });
+        return this.previewService.createPage(pageData.pageId, page.template, routerState.state.context.type).catch((createPageError) => {
+          this.previewService.showDetailedErrorDialog(TranslationKey.CREATE_PAGE_UNEXPECTED_ERROR, {
+            errorMessage: errorToString(createPageError),
           });
+        });
       } else {
         this.previewService.showErrorDialog(TranslationKey.MISSING_ROUTING_DATA);
       }

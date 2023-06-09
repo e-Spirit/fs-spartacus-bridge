@@ -97,7 +97,7 @@ export class TppStatusService implements OnDestroy {
     if (projectApps.some((projectApp) => projectApp.includes('TranslationStudio'))) {
       this.TPP_SNAP.overrideDefaultButton('translate', {
         getItems: () => [],
-        execute: ({ status: { id: elementId }, language }) =>
+        execute: async ({ status: { id: elementId }, language }) =>
           this.TPP_SNAP.execute('script:translationstudio_ocm_translationhelper', { language, elementId }),
       });
     }

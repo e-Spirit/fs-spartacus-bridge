@@ -357,15 +357,11 @@ describe('FsCmsPageMerger', () => {
 });
 
 describe('should use default merge strategy', () => {
-  let mergedCmsPage: CmsStructureModel;
-  let fsManagedPage: FirstSpiritManagedPage;
-  let occCmsPage: CmsStructureModel;
-  let fsCmsPage: CmsStructureModel;
-  let fsCmsPageMerger: CmsStructureModelMerger;
+  const fsManagedPage: FirstSpiritManagedPage = FirstSpiritManagedPage.enhanceSapPages('myTemplate', [
+    { name: 'DefaultMergeStrategySlot' },
+  ]);
 
-  fsManagedPage = FirstSpiritManagedPage.enhanceSapPages('myTemplate', [{ name: 'DefaultMergeStrategySlot' }]);
-
-  occCmsPage = {
+  const occCmsPage: CmsStructureModel = {
     page: {
       template: 'myTemplate',
       slots: {
@@ -377,7 +373,7 @@ describe('should use default merge strategy', () => {
     components: [{ uid: 'DefaultMergeStrategySlotComponent1' }],
   };
 
-  fsCmsPage = {
+  const fsCmsPage: CmsStructureModel = {
     page: {
       template: 'myTemplate',
       loadTime: 1583402860713,
@@ -390,8 +386,8 @@ describe('should use default merge strategy', () => {
     components: [{ uid: 'muchBetterDefaultMergeStrategySlotComponent1' }],
   };
 
-  fsCmsPageMerger = new CmsStructureModelMerger(fsManagedPage, new MockInjector());
-  mergedCmsPage = fsCmsPageMerger.merge(occCmsPage, fsCmsPage);
+  const fsCmsPageMerger: CmsStructureModelMerger = new CmsStructureModelMerger(fsManagedPage, new MockInjector());
+  const mergedCmsPage: CmsStructureModel = fsCmsPageMerger.merge(occCmsPage, fsCmsPage);
 
   it('if none is provided', () => {
     expect(mergedCmsPage.page.slots.DefaultMergeStrategySlot).toEqual({

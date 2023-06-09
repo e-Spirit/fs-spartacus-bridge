@@ -54,6 +54,7 @@ yarn-error.log
 testem.log
 **/typings
 **/test-reports
+.angular/cache
 
 # OSX
 .DS_Store

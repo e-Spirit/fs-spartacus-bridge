@@ -35,8 +35,9 @@ describe('PreviewService', () => {
         {
           provide: TppWrapperService,
           useValue: {
-            getElementStatus: (previewId: string) => Promise.resolve({ id: 'foo', uid: 'foobar', name: 'name' }),
-            createSection: (previewElementId: string, options: any) => Promise.resolve({ identifier: 'mySectionId', name: 'mySectionId' }),
+            getElementStatus: async (previewId: string) => Promise.resolve({ id: 'foo', uid: 'foobar', name: 'name' }),
+            createSection: async (previewElementId: string, options: any) =>
+              Promise.resolve({ identifier: 'mySectionId', name: 'mySectionId' }),
             triggerRerenderView: createSpy('TppWrapperService.triggerRerenderView').and.returnValue(Promise.resolve()),
           },
         },
@@ -53,9 +54,12 @@ describe('PreviewService', () => {
         {
           provide: PreviewDialogService,
           useValue: {
-            showDetailedErrorDialog: (title$: Observable<string>, message$: Observable<string>, detailedMessage$?: Observable<string>) =>
-              Promise.resolve(),
-            showErrorDialog: (title$: Observable<string>, message$: Observable<string>) => Promise.resolve(),
+            showDetailedErrorDialog: async (
+              title$: Observable<string>,
+              message$: Observable<string>,
+              detailedMessage$?: Observable<string>
+            ) => Promise.resolve(),
+            showErrorDialog: async (title$: Observable<string>, message$: Observable<string>) => Promise.resolve(),
           },
         },
         {
@@ -78,7 +82,7 @@ describe('PreviewService', () => {
 
   it('should not treat the site as managed by FS', async () => {
     TestBed.overrideProvider(TppWrapperService, {
-      useValue: { getElementStatus: (previewId: string) => Promise.resolve({}) },
+      useValue: { getElementStatus: async (previewId: string) => Promise.resolve({}) },
     });
     const service: PreviewService = TestBed.inject(PreviewService);
     expect(await service.isFirstSpiritManagedPage('myPreviewId')).toBeFalse();
