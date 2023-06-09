@@ -1,6 +1,6 @@
 {
   "name": "fs-spartacus-bridge",
-  "version": "6.0.1-SNAPSHOT",
+  "version": "6.0.1",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -78,7 +78,7 @@
     "eslint-plugin-prefer-arrow": "^1.2.3",
     "eslint-plugin-react": "^7.32.2",
     "fs-extra": "^10.0.0",
-    "fs-spartacus-common": "6.0.1-SNAPSHOT",
+    "fs-spartacus-common": "^6.0.1",
     "husky": "6.0.0",
     "jasmine-core": "3.8.0",
     "jasmine-spec-reporter": "7.0.0",
