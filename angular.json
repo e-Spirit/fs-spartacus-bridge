@@ -19,6 +19,10 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ],
             "main": "./src/test.ts",
             "tsConfig": "./src/tsconfig.spec.json",
             "karmaConfig": "./src/karma.conf.js",
@@ -37,7 +41,6 @@
       }
     }
   },
-  "defaultProject": "fs-spartacus-bridge",
   "cli": {
     "analytics": false,
     "schematicCollections": [

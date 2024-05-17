@@ -30,7 +30,7 @@
   -> Existing SourceMaps will be deleted
 */
 
-const glob = require('glob');
+const { glob } = require('glob');
 const { minify } = require('terser');
 const { writeFileSync, readFileSync, unlinkSync, existsSync } = require('fs-extra');
 const { basename, resolve } = require('path');

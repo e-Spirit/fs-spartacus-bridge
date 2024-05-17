@@ -66,7 +66,7 @@ export class FsCmsPageAdapter extends CmsPageAdapter {
           this.converter.pipeable(FS_CMS_PAGE_PREPARER),
           switchAll(),
           this.converter.pipeable(FS_CMS_PAGE_NORMALIZER),
-          defaultIfEmpty()
+          defaultIfEmpty(null)
         );
       })
     );

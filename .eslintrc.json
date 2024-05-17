@@ -1,25 +1,41 @@
 {
   "root": true,
-  "ignorePatterns": ["projects/**/*"],
+  "ignorePatterns": [
+    "projects/**/*"
+  ],
   "overrides": [
     {
-      "files": ["*.ts"],
+      "files": [
+        "*.ts"
+      ],
       "parserOptions": {
-        "project": ["tsconfig.json", "e2e/tsconfig.json"],
+        "project": [
+          "tsconfig.json",
+          "e2e/tsconfig.json"
+        ],
         "createDefaultProgram": true
       },
       "extends": [
-        "plugin:@angular-eslint/ng-cli-compat",
-        "plugin:@angular-eslint/ng-cli-compat--formatting-add-on",
+        "plugin:import/errors",
+        "plugin:import/warnings",
+        "plugin:import/typescript",
+        "plugin:@angular-eslint/recommended",
         "plugin:@angular-eslint/template/process-inline-templates"
       ],
-      "plugins": ["eslint-plugin-react"],
+      "plugins": [
+        "eslint-plugin-react",
+        "@typescript-eslint"
+      ],
       "rules": {
         "@angular-eslint/component-selector": [
           "error",
           {
             "type": "element",
-            "prefix": ["fs", "cx", "app"],
+            "prefix": [
+              "fs",
+              "cx",
+              "app"
+            ],
             "style": "kebab-case"
           }
         ],
@@ -27,7 +43,11 @@
           "error",
           {
             "type": "attribute",
-            "prefix": ["fs", "cx", "app"],
+            "prefix": [
+              "fs",
+              "cx",
+              "app"
+            ],
             "style": "camelCase"
           }
         ],
@@ -67,18 +87,32 @@
           }
         ],
         "@typescript-eslint/naming-convention": "off",
-        "@typescript-eslint/semi": ["off", null],
+        "@typescript-eslint/semi": [
+          "off",
+          null
+        ],
         "@typescript-eslint/strict-boolean-expressions": "off",
         "@typescript-eslint/type-annotation-spacing": "off",
-        "arrow-parens": ["off", "always"],
-        "brace-style": ["off", "off"],
+        "arrow-parens": [
+          "off",
+          "always"
+        ],
+        "brace-style": [
+          "off",
+          "off"
+        ],
         "eol-last": "off",
         "id-blacklist": "off",
         "id-match": "off",
         "import/order": "off",
+        "import/no-unresolved" : "off",
+        "import/no-duplicates" : "off",
         "jsdoc/no-types": "off",
         "jsdoc/newline-after-description": "off",
-        "linebreak-style": ["error", "unix"],
+        "linebreak-style": [
+          "error",
+          "unix"
+        ],
         "max-len": "off",
         "new-parens": "off",
         "newline-per-chained-call": "off",
@@ -97,11 +131,19 @@
         ],
         "react/jsx-wrap-multilines": "off",
         "space-before-function-paren": "off",
-        "space-in-parens": ["off", "never"],
+        "space-in-parens": [
+          "off",
+          "never"
+        ],
         "@typescript-eslint/member-ordering": [
           "error",
           {
-            "default": ["static-field", "instance-field", "static-method", "instance-method"]
+            "default": [
+              "static-field",
+              "instance-field",
+              "static-method",
+              "instance-method"
+            ]
           }
         ],
         "prefer-arrow/prefer-arrow-functions": "off",
@@ -112,8 +154,12 @@
       }
     },
     {
-      "files": ["*.html"],
-      "extends": ["plugin:@angular-eslint/template/recommended"],
+      "files": [
+        "*.html"
+      ],
+      "extends": [
+        "plugin:@angular-eslint/template/recommended"
+      ],
       "rules": {}
     }
   ]
