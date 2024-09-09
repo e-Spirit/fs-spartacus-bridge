@@ -10,7 +10,7 @@ class MockTranslationService extends TranslationService {
   constructor() {
     super();
   }
-  translate = (key: string, replacements?: any): Observable<string> => of(`${key}__${JSON.stringify(replacements)}`);
+  translate = (key: string | string[], replacements?: any): Observable<string> => of(`${key}__${JSON.stringify(replacements)}`);
 }
 
 async function setupTestBed() {
@@ -45,7 +45,7 @@ describe('PreviewTranslationService', () => {
         expect(title).toEqual(`${PreviewTranslationKey.MISSING_FS_PAGE_MAPPING}.title__${JSON.stringify(replacements)}`);
         expect(message).toEqual(`${PreviewTranslationKey.MISSING_FS_PAGE_MAPPING}.message__${JSON.stringify(replacements)}`);
         expect(detailedMessage).toEqual(
-          `${PreviewTranslationKey.MISSING_FS_PAGE_MAPPING}.detailedMessage__${JSON.stringify(replacements)}`
+          `${PreviewTranslationKey.MISSING_FS_PAGE_MAPPING}.detailedMessage__${JSON.stringify(replacements)}`,
         );
       });
   });
