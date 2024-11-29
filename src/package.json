@@ -7,14 +7,14 @@
     "tslib": "^2.0.0"
   },
   "peerDependencies": {
-    "@angular/core": "17.3.6",
-    "@angular/animations": "17.3.6",
-    "@angular/common": "17.3.6",
-    "@angular/localize": "17.3.6",
-    "@angular/router": "17.3.6",
-    "@spartacus/core": "2211.27.0",
-    "@spartacus/storefront": "2211.27.0",
-    "fs-spartacus-common": "^7.1.0"
+    "@angular/core": "17.3.12",
+    "@angular/animations": "17.3.12",
+    "@angular/common": "17.3.12",
+    "@angular/localize": "17.3.12",
+    "@angular/router": "17.3.12",
+    "@spartacus/core": "~2211.31.1",
+    "@spartacus/storefront": "~2211.31.1",
+    "fs-spartacus-common": "^7.1.2-snapshot-spart-401-update-spartacus-dependencies-q4fy2025.20241122115823"
   },
   "license": "Apache-2.0"
 }
