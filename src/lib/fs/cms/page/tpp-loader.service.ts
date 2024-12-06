@@ -22,27 +22,25 @@ export class TppLoaderService {
     if (isPlatformBrowser(this.platformId)) {
       /* eslint-disable */
       return new Promise((resolve, reject) => {
-        window.addEventListener('message', function awaitTppPong({ origin, data }) {
-          if (typeof data === 'object' && 'tpp' in data && data.tpp._response && data.tpp._response.version) {
-            window.removeEventListener('message', awaitTppPong);
-            const version = data.tpp._response.version;
-            const url = 'TPP_SNAP_URL' in window ? (<any>window).TPP_SNAP_URL : `${origin}/fs5webedit/snap.js`;
-            console.debug('load TPP_SNAP version %o', version);
-            const scpt = document.body.appendChild(document.createElement('script'));
-            scpt.onerror = scpt.onload = async () => {
-              if (!('TPP_SNAP' in window)) {
-                reject(new Error(`Unable to load TPP_SNAP via '${url}'.`));
-              } else if (await (<any>window).TPP_SNAP.isConnected) {
-                console.debug('loaded TPP_SNAP via %o', url);
-                resolve((<any>window).TPP_SNAP);
-              } else {
-                reject(new Error(`Unable to set up TPP_SNAP via '${url}'.`));
-              }
-            };
-            scpt.src = url;
+        console.debug('load OCM 3.0');
+        const fsHost = document.referrer;
+        const url = fsHost.endsWith('/') ? `${fsHost}fs5webedit/live/live.js` : `${fsHost}/fs5webedit/live/live.js`;
+        const scriptTag = document.body.appendChild(document.createElement('script'));
+
+        scriptTag.onerror = scriptTag.onload = async () => {
+          if (!('TPP_SNAP' in window)) {
+            reject(new Error(`Unable to load TPP_SNAP via '${url}'.`));
           }
-        });
-        window.top.postMessage({ tpp: { ping: 1 } }, '*');
+
+          if (!(await (window as any).TPP_SNAP.isConnected)) {
+            reject(new Error(`Unable to set up TPP_SNAP via '${url}'.`));
+          }
+
+          console.debug('loaded TPP_SNAP via %o', url);
+          console.info('Preview successfully initialized.');
+          resolve((window as any).TPP_SNAP);
+        };
+        scriptTag.src = url;
       });
       //tslint: enable
     }

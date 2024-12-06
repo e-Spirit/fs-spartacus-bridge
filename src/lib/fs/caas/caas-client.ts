@@ -7,7 +7,7 @@ import { CaasAccessData } from './caas-access-data';
  * This class handles all calls to the CaaS instance.
  */
 export class CaasClient {
-  private collectionUrl: string;
+  private collectionUrl: URL;
 
   /**
    * Creates an instance of a CaasClient.
@@ -32,7 +32,7 @@ export class CaasClient {
   getByUid(uid: string, language: string, altName?: string): Observable<any> {
     altName = typeof altName === 'string' && altName.trim().length > 0 ? altName : undefined;
     return this.httpClient
-      .get(this.collectionUrl, {
+      .get(this.collectionUrl.href, {
         headers: {
           Authorization: `Bearer ${this.caasCollection.apiKey}`,
         },
@@ -63,7 +63,7 @@ export class CaasClient {
    */
   getPageSections(identifier: string, language: string): Observable<any> {
     return this.httpClient
-      .get(this.collectionUrl, {
+      .get(this.collectionUrl.href, {
         headers: {
           Authorization: `Bearer ${this.caasCollection.apiKey}`,
         },
@@ -91,7 +91,7 @@ export class CaasClient {
    */
   getByIds(ids: string[]): Observable<any> {
     return this.httpClient
-      .get(this.collectionUrl, {
+      .get(this.collectionUrl.href, {
         headers: {
           Authorization: `Bearer ${this.caasCollection.apiKey}`,
         },

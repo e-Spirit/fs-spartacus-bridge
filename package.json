@@ -1,6 +1,6 @@
 {
   "name": "fs-spartacus-bridge",
-  "version": "7.2.0",
+  "version": "8.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -29,6 +29,7 @@
     "immutable": "4.0.0-rc.12",
     "jquery": "3.7.1",
     "ngx-infinite-scroll": "17.0.0",
+    "partysocket": "^1.0.2",
     "rxjs": "7.8.1",
     "tslib": "^2.6.2",
     "zone.js": "~0.14.5"

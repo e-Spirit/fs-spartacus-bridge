@@ -33,7 +33,11 @@ export class CaasAccessData {
    * @return {string} The collection URL generated in the format <baseURL>/<tenantId>/<projectId>.<collection>.
    * @memberof CaasAccessData
    */
-  collectionUrl() {
-    return `${this.baseUrl}/${this.tenantId}/${this.project}.${this.collection}`;
+  collectionUrl(): URL {
+    return new URL(`${this.baseUrl}/${this.tenantId}/${this.project}.${this.collection}`);
+  }
+
+  tokenUrl() {
+    return new URL(`_logic/securetoken?tenant=${this.tenantId}`, this.collectionUrl().origin).href
   }
 }

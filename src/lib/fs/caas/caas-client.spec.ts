@@ -102,7 +102,7 @@ describe('CaasService', () => {
     );
 
     const expectedCollectionUrl = caasCollectionAccessData.collectionUrl();
-    const req = httpMock.expectOne((request) => request.url.startsWith(expectedCollectionUrl));
+    const req = httpMock.expectOne((request) => request.url.startsWith(expectedCollectionUrl.href));
     req.flush('404 error', { status: 404, statusText: 'Not Found' });
   });
 
@@ -115,6 +115,6 @@ describe('CaasService', () => {
 
     // HttpTestingController.expectOne() not working with queryparameters - https://github.com/angular/angular/issues/19974
     const expectedCollectionUrl = caasCollectionAccessData.collectionUrl();
-    return httpMock.expectOne((request) => request.url.startsWith(expectedCollectionUrl));
+    return httpMock.expectOne((request) => request.url.startsWith(expectedCollectionUrl.href));
   }
 });

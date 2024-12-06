@@ -11,6 +11,6 @@ describe('CaasCollectionAccessData', () => {
       'myApiKey'
     );
 
-    expect(caasCollectionAccessData.collectionUrl()).toEqual('https://my-caas/myTenant/myProject.preview.content');
+    expect(caasCollectionAccessData.collectionUrl().href).toEqual('https://my-caas/myTenant/myProject.preview.content');
   });
 });
