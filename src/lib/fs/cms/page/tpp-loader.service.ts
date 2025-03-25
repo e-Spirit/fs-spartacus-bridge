@@ -1,6 +1,7 @@
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { SNAP } from './fs-tpp-api.data';
+import { isHeadlessTestEnv } from "../../util/helper";
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +20,7 @@ export class TppLoaderService {
   }
 
   private async loadTPP(): Promise<SNAP> | null {
-    if (isPlatformBrowser(this.platformId)) {
+    if (isPlatformBrowser(this.platformId) && !isHeadlessTestEnv()) {
       /* eslint-disable */
       return new Promise((resolve, reject) => {
         console.debug('load OCM 3.0');

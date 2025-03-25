@@ -14,9 +14,10 @@ import { CreatePageResult } from '../fs/cms/page/fs-tpp-api.data';
  * This overlay component marks empty slots in that content can be added.
  */
 @Component({
-  selector: 'fs-fs-editing-overlay',
-  templateUrl: './fs-editing-overlay.component.html',
-  styleUrls: ['./fs-editing-overlay.component.css'],
+    selector: 'fs-fs-editing-overlay',
+    templateUrl: './fs-editing-overlay.component.html',
+    styleUrls: ['./fs-editing-overlay.component.css'],
+    standalone: false
 })
 export class FsEditingOverlayComponent implements OnDestroy {
   static readonly TYPE_CODE = 'FsEditingOverlay';

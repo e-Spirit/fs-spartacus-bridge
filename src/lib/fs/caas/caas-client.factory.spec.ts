@@ -1,5 +1,5 @@
 import { TppStatusService } from '../cms/page/tpp-status-service';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { BaseSiteService, ConfigModule } from '@spartacus/core';
 import { of } from 'rxjs';
@@ -7,24 +7,22 @@ import { of } from 'rxjs';
 import { FsSpartacusBridgeModule } from '../../fs-spartacus-bridge.module';
 import { CaasClientFactory } from './caas-client.factory';
 import { MockBaseSiteService } from '../cms/page/processing/merge/cms-structure-model-merger-factory.spec';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('CaasCollectionClientFactory', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-        FsSpartacusBridgeModule.withConfig({
-          bridge: {
-            test: {
-              caas: { baseUrl: 'https://baseUrl', project: 'project', apiKey: 'apiKey', tenantId: 'defaultTenant' },
-              firstSpiritManagedPages: [],
+    imports: [FsSpartacusBridgeModule.withConfig({
+            bridge: {
+                test: {
+                    caas: { baseUrl: 'https://baseUrl', project: 'project', apiKey: 'apiKey', tenantId: 'defaultTenant' },
+                    firstSpiritManagedPages: [],
+                },
             },
-          },
         }),
-        ConfigModule.forRoot(),
-      ],
-      providers: [{ provide: BaseSiteService, useClass: MockBaseSiteService }],
-    });
+        ConfigModule.forRoot()],
+    providers: [{ provide: BaseSiteService, useClass: MockBaseSiteService }, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+});
   });
 
   it('should build a client for preview mode', (done) => {
@@ -32,7 +30,7 @@ describe('CaasCollectionClientFactory', () => {
       useValue: { isFirstSpiritPreview: () => of(true) } as TppStatusService,
     });
 
-    performAndVerifyTestRequest('https://baseUrl/defaultTenant/project.preview.content', done);
+    performAndVerifyTestRequest(new URL('https://baseUrl/defaultTenant/project.preview.content'), done);
   });
 
   it('should build a client for live mode', (done) => {
@@ -40,10 +38,10 @@ describe('CaasCollectionClientFactory', () => {
       useValue: { isFirstSpiritPreview: () => of(false) } as TppStatusService,
     });
 
-    performAndVerifyTestRequest('https://baseUrl/defaultTenant/project.release.content', done);
+    performAndVerifyTestRequest(new URL('https://baseUrl/defaultTenant/project.release.content'), done);
   });
 
-  function performAndVerifyTestRequest(caasUrl: string, done: DoneFn) {
+  function performAndVerifyTestRequest(caasUrl: URL, done: DoneFn) {
     const clientObservable: CaasClientFactory = TestBed.inject(CaasClientFactory);
     clientObservable.createCaasClient().subscribe((client) => {
       client.getByUid('myDocument', 'de').subscribe((res) => {
@@ -52,7 +50,7 @@ describe('CaasCollectionClientFactory', () => {
       });
 
       const httpMock = TestBed.inject(HttpTestingController); // Must get AFTER overriding the provider!
-      httpMock.expectOne((request) => request.url.startsWith(caasUrl));
+      httpMock.expectOne((request) => request.url.startsWith(caasUrl.toString()));
       httpMock.verify();
       done(); // Important! Otherwise failing test might not be recognized, due to the async execution.
     });

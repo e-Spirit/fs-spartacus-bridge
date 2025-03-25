@@ -134,3 +134,13 @@ export function createCaasAccessData(config: FsSpartacusBridgeConfig, baseSite: 
       : config.bridge[baseSite].caas.apiKey
   );
 }
+
+
+/**
+ * Checks if current environment is a test environment running in headless Chrome (karma-chrome-launcher).
+ *
+ * @returns {boolean} `true` if it is a test environment running in headless Chrome, otherwise `false`.
+ */
+export function isHeadlessTestEnv() {
+  return navigator.userAgent.includes('HeadlessChrome');
+}

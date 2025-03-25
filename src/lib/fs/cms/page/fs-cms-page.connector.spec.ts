@@ -5,7 +5,7 @@ import {
   fsDrivenCmsStructureModel,
   occResponseWithSapSkeleton,
 } from './fs-cms-page.connector.spec.data';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Type } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import {
@@ -32,6 +32,7 @@ import { FirstSpiritManagedPage } from 'fs-spartacus-common';
 import { FsDrivenPageService } from './fs-driven-page-service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockBaseSiteService } from './processing/merge/cms-structure-model-merger-factory.spec';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 class MockCmsPageAdapter implements CmsPageAdapter {
   constructor(
@@ -64,34 +65,26 @@ describe('FsCmsPageConnector', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-        RouterTestingModule,
+    imports: [RouterTestingModule,
         FsSpartacusBridgeModule.withConfig({
-          bridge: {
-            test: {
-              caas: {
-                baseUrl: '',
-                project: '',
-                apiKey: '',
-                tenantId: '',
-              },
-              firstSpiritManagedPages: [
-                FirstSpiritManagedPage.enhanceSapPages('LandingPage2Template', []),
-                FirstSpiritManagedPage.integrateFsDrivenPages('FsDrivenPageTemplate', []),
-                FirstSpiritManagedPage.integrateFsDrivenPagesIntoSapSkeleton(
-                  'homepage',
-                  PageType.CONTENT_PAGE,
-                  'FsDrivenLandingPage2Template',
-                  []
-                ),
-              ],
+            bridge: {
+                test: {
+                    caas: {
+                        baseUrl: '',
+                        project: '',
+                        apiKey: '',
+                        tenantId: '',
+                    },
+                    firstSpiritManagedPages: [
+                        FirstSpiritManagedPage.enhanceSapPages('LandingPage2Template', []),
+                        FirstSpiritManagedPage.integrateFsDrivenPages('FsDrivenPageTemplate', []),
+                        FirstSpiritManagedPage.integrateFsDrivenPagesIntoSapSkeleton('homepage', PageType.CONTENT_PAGE, 'FsDrivenLandingPage2Template', []),
+                    ],
+                },
             },
-          },
         }),
-        ConfigModule.forRoot(),
-      ],
-      providers: [
+        ConfigModule.forRoot()],
+    providers: [
         TranslationService,
         { provide: LanguageService, useValue: {} },
         { provide: CmsPageAdapter, useValue: new MockCmsPageAdapter('OccCmsPageAdapter', of(occCmsStructureModel)) },
@@ -100,8 +93,10 @@ describe('FsCmsPageConnector', () => {
         { provide: PipelineFactory, useValue: new MockPipelineFactory(pipeline) },
         { provide: TppStatusService, useValue: {} },
         { provide: BaseSiteService, useValue: MockBaseSiteService },
-      ],
-    });
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+    ]
+});
 
     spyOn(pipeline, 'execute').and.callThrough();
   });

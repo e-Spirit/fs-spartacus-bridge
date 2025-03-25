@@ -4,45 +4,45 @@ import { TestBed } from '@angular/core/testing';
 import { ConfigModule } from '@spartacus/core';
 import { FsSpartacusBridgeModule } from '../../../fs-spartacus-bridge.module';
 import { FirstSpiritManagedPage, copy } from 'fs-spartacus-common';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { LayoutConfig } from '@spartacus/storefront';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('CmsStructureModelResponseFactory', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-        FsSpartacusBridgeModule.withConfig({
-          bridge: {
-            test: {
-              caas: {
-                baseUrl: '',
-                project: '',
-                apiKey: '',
-                tenantId: '',
-              },
-              firstSpiritManagedPages: [FirstSpiritManagedPage.integrateFsDrivenPages('FirstSpiritDrivenPage', [])],
+    imports: [FsSpartacusBridgeModule.withConfig({
+            bridge: {
+                test: {
+                    caas: {
+                        baseUrl: '',
+                        project: '',
+                        apiKey: '',
+                        tenantId: '',
+                    },
+                    firstSpiritManagedPages: [FirstSpiritManagedPage.integrateFsDrivenPages('FirstSpiritDrivenPage', [])],
+                },
             },
-          },
         }),
-        ConfigModule.forRoot(),
-      ],
-      providers: [
+        ConfigModule.forRoot()],
+    providers: [
         {
-          provide: LayoutConfig,
-          useValue: {
-            layoutSlots: {
-              SomeSpartacusTemplate: {
-                slots: ['BottomHeaderSlot', 'Section1', 'Section2'],
-              },
-              FirstSpiritDrivenPage: {
-                slots: ['MySlot', 'MyOtherSlot'],
-              },
+            provide: LayoutConfig,
+            useValue: {
+                layoutSlots: {
+                    SomeSpartacusTemplate: {
+                        slots: ['BottomHeaderSlot', 'Section1', 'Section2'],
+                    },
+                    FirstSpiritDrivenPage: {
+                        slots: ['MySlot', 'MyOtherSlot'],
+                    },
+                },
             },
-          },
         },
-      ],
-    });
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+    ]
+});
   });
 
   describe('should create and return a fake occ response', () => {
