@@ -7,6 +7,7 @@ import { Pipeline } from './processing/pipeline';
 import { PipelineFactory } from './processing/pipeline-factory';
 import { FsCmsPageAdaptersFacade } from './fs-cms-page-adapters-facade';
 import { FsDrivenPageService } from './fs-driven-page-service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 /**
  * This class prepares the content from FirstSpirit and SAP Commerce and executes the {@link Pipeline}.
@@ -47,6 +48,13 @@ export class FsCmsPageConnector extends CmsPageConnector {
       switchMap(([fs, pipeline]) => {
         return occCmsPage$.pipe(
           catchError((error) => {
+            if (error instanceof HttpErrorResponse && error.status === 404) {
+              console.warn(
+                `The request for page '${pageContext.id}' is used to differentiate between Shop Driven and FirstSpirit Driven Pages.\n` +
+                `A 404 response is expected for FirstSpirit Driven Pages, indicating the absence of the page in SAP Commerce Cloud.`
+              );
+            }
+
             const fsDrivenPageResult$ = this.fsDrivenPageService.process(fs);
             return fsDrivenPageResult$ ? fsDrivenPageResult$ : occCmsPage$;
           }),

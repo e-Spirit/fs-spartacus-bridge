@@ -35,7 +35,7 @@ export class TppEventHandlerService {
   initialize() {
     this.tppWrapperService.onRequestPreviewElement((previewId: string) => {
       this.ngZone.run(async () => {
-        const currentPreviewId = await this.tppWrapperService.getPreviewElement();
+        const currentPreviewId = await this.pollForPreviewId();
         if (previewId != null && currentPreviewId !== previewId) {
           console.log(`Requesting to display the element with previewId '${previewId}'...`);
           const elementStatus = await this.tppWrapperService.getElementStatus(previewId);
@@ -114,5 +114,32 @@ export class TppEventHandlerService {
       )
       .toPromise()
       .catch(console.error);
+  }
+
+  /**
+   * Polls the TPP wrapper service for the preview id multiple times after a small delay.
+   *
+   * @private
+   * @return {Promise<string | null>} The current preview id if found, otherwise null after max attempts.
+   */
+  private async pollForPreviewId(): Promise<string | null> {
+    const MAX_ATTEMPTS = 5;
+    const WAIT_TIME_MS = 500;
+    let attempts = 0;
+
+    while (attempts < MAX_ATTEMPTS) {
+      const previewId = await this.tppWrapperService.getPreviewElement();
+      if (previewId) {
+        console.info(`Preview id found after ${attempts + 1} attempts: ${previewId}`);
+        return previewId;
+      }
+
+      console.debug(`Preview id not found, retrying... (${attempts + 1}/${MAX_ATTEMPTS})`);
+      await new Promise((resolve) => setTimeout(resolve, WAIT_TIME_MS));
+      attempts++;
+    }
+
+    console.warn(`Failed to retrieve preview id after ${MAX_ATTEMPTS} attempts.`);
+    return null;
   }
 }
