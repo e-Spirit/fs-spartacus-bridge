@@ -20,6 +20,8 @@ import { findDocumentsInCaasResponse } from '../../util/helper';
   providedIn: 'root',
 })
 export class TppEventHandlerService {
+  static homepagePreviewId: string | null = null;
+
   constructor(
     private tppWrapperService: TppWrapperService,
     private previewPageService: PreviewPageService,
@@ -118,6 +120,8 @@ export class TppEventHandlerService {
 
   /**
    * Polls the TPP wrapper service for the preview id multiple times after a small delay.
+   * If `homepagePreviewId` is not already set, it retrieves the element status of the preview id.
+   * If the preview id corresponds to the homepage, it updates `TppEventHandlerService.homepagePreviewId`.
    *
    * @private
    * @return {Promise<string | null>} The current preview id if found, otherwise null after max attempts.
@@ -131,6 +135,14 @@ export class TppEventHandlerService {
       const previewId = await this.tppWrapperService.getPreviewElement();
       if (previewId) {
         console.info(`Preview id found after ${attempts + 1} attempts: ${previewId}`);
+
+        if (!TppEventHandlerService.homepagePreviewId) {
+          const elementStatus = await this.tppWrapperService.getElementStatus(previewId);
+          if (elementStatus?.uid == PreviewPageService.HOMEPAGE_ID.toLocaleLowerCase()) {
+            TppEventHandlerService.homepagePreviewId = elementStatus.previewId;
+          }
+        }
+
         return previewId;
       }
 

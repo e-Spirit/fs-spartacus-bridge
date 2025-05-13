@@ -2,6 +2,7 @@ import { SNAP } from './fs-tpp-api.data';
 import { CaasAccessData } from '../../caas/caas-access-data';
 // @ts-ignore missing types for this package
 import { WebSocket } from 'partysocket';
+import { TppEventHandlerService } from './tpp-event-handler-service';
 
 export namespace WsProvider {
   // eslint-disable-next-line prefer-const
@@ -50,16 +51,20 @@ export namespace WsProvider {
     if (!documentId || !changeType) {
       throw new Error(
         'Message is missing crucial information: ' +
-          (!documentId ? 'documentId' : '') +
-          (!documentId && !changeType ? ' and ' : '') +
-          (!changeType ? 'changeType' : ''),
+        (!documentId ? 'documentId' : '') +
+        (!documentId && !changeType ? ' and ' : '') +
+        (!changeType ? 'changeType' : ''),
       );
     }
 
-    const currentPreviewElement = await snap.getPreviewElement();
+    let currentPreviewElement = await snap.getPreviewElement();
+
+    if (changeType === 'delete' && documentId === currentPreviewElement) {
+      currentPreviewElement = await snap.setPreviewElement(TppEventHandlerService.homepagePreviewId);
+      await snap.triggerRerenderView();
+    }
 
     if (documentId === currentPreviewElement) {
-      await snap.triggerRerenderView();
       debug && console.log(`Received event for CURRENT SET PAGE with change type '${changeType}'`);
     } else {
       debug && console.debug(`Received event for '${documentId}' with change type '${changeType}'`);

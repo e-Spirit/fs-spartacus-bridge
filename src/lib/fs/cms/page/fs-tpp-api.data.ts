@@ -18,6 +18,7 @@ export interface Status {
   uidType?: string;
   elementType?: string;
   id?: string;
+  previewId?: string;
   displayName?: string;
   uid?: string;
   released?: boolean;
