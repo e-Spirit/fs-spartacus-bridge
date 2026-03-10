@@ -280,6 +280,8 @@ export interface SNAP {
   showEditDialog(previewId: string);
   registerButton(button: SNAPButton, index: number): void;
   getPreviewLanguage(): Promise<string>;
+  onBeforeRerenderView?(handler: (previewId: string, language: string) => any);
+  onBeforeRequestPreviewElement?(handler: (previewId: string, language: string) => any);
 }
 
 export interface Button {

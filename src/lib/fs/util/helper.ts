@@ -131,7 +131,8 @@ export function createCaasAccessData(config: FsSpartacusBridgeConfig, baseSite: 
     isPreview ? CaasCollection.PREVIEW_CONTENT : CaasCollection.RELEASE_CONTENT,
     isPreview && config.bridge[baseSite].caas.apiKeyPreview
       ? config.bridge[baseSite].caas.apiKeyPreview
-      : config.bridge[baseSite].caas.apiKey
+      : config.bridge[baseSite].caas.apiKey,
+    config.bridge[baseSite].caas.changeStreamEventTimeout
   );
 }
 

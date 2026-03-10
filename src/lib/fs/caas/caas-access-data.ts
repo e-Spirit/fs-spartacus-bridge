@@ -17,6 +17,7 @@ export class CaasAccessData {
    * @param {string} project The project ID identifies the FirstSpirit project that is connected to the CaaS instance.
    * @param {CaasCollection} collection A collection helps to distinguish between preview and released content.
    * @param {string} apiKey The CaaS API key identifies the permission for the access to the CaaS instance.
+   * @param {number} [changeStreamEventTimeout=3000] The change stream event timeout defines how long the client should wait for a response from the CaaS when listening to change stream events. If the timeout is exceeded, the client will stop waiting and proceed with rendering. The default value is 3000 ms.
    * @memberof CaasAccessData
    */
   constructor(
@@ -24,7 +25,8 @@ export class CaasAccessData {
     private tenantId: string,
     private project: string,
     private collection: CaasCollection,
-    readonly apiKey: string
+    readonly apiKey: string,
+    readonly changeStreamEventTimeout: number = 3000
   ) {}
 
   /**

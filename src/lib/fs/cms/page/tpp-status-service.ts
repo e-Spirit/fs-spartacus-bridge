@@ -24,6 +24,7 @@ export class TppStatusService implements OnDestroy {
   private firstSpiritPreview: Observable<boolean>;
   private subs$ = new Subscription();
   private TPP_SNAP: SNAP;
+  private currentPreviewId: string | null | undefined = undefined;
 
   constructor(
     private cmsService: CmsService,
@@ -78,7 +79,12 @@ export class TppStatusService implements OnDestroy {
 
   private async setPagePreviewElementInPreview(page: Page): Promise<void> {
     if (page && this.TPP_SNAP) {
-      await this.TPP_SNAP.setPreviewElement((page.properties || {}).previewId || null);
+      const previewId = (page.properties || {}).previewId || null;
+      if (previewId === this.currentPreviewId) {
+        return;
+      }
+      this.currentPreviewId = previewId;
+      await this.TPP_SNAP.setPreviewElement(previewId);
     }
   }
 
@@ -139,6 +145,11 @@ export class TppStatusService implements OnDestroy {
       const { apiKeyPreview } = this.config.bridge[activeBaseSite].caas;
 
       WsProvider.init(caasAccessData, apiKeyPreview);
+
+      this.TPP_SNAP.onBeforeRerenderView(async (previewId: string, _language: string) => {
+        return WsProvider.waitForDocumentEvent(previewId, ['replace', 'insert'], caasAccessData.changeStreamEventTimeout);
+      });
+
     });
   }
 }

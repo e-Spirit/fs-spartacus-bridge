@@ -10,6 +10,11 @@ export namespace WsProvider {
   export let snap: SNAP;
   export let ws: any;
 
+  type WaiterKey = string; // `${documentId}:${operationType}`
+  const pendingWaiters = new Map<WaiterKey, Array<() => void>>();
+  const recentEvents = new Map<WaiterKey, ReturnType<typeof setTimeout>>();
+  let recentEventsTtlMs = 3000;
+
   let tokenUrl: string;
   let collectionUrl: URL;
   let apiKey: string;
@@ -18,6 +23,7 @@ export namespace WsProvider {
     tokenUrl = caasAccessData.tokenUrl();
     collectionUrl = caasAccessData.collectionUrl();
     apiKey = apiKeyPreview;
+    recentEventsTtlMs = caasAccessData.changeStreamEventTimeout;
     await connect();
   };
 
@@ -51,11 +57,25 @@ export namespace WsProvider {
     if (!documentId || !changeType) {
       throw new Error(
         'Message is missing crucial information: ' +
-        (!documentId ? 'documentId' : '') +
-        (!documentId && !changeType ? ' and ' : '') +
-        (!changeType ? 'changeType' : ''),
+          (!documentId ? 'documentId' : '') +
+          (!documentId && !changeType ? ' and ' : '') +
+          (!changeType ? 'changeType' : ''),
       );
     }
+
+    // Track recent events so late-registering waiters can still resolve immediately.
+    // Reset the TTL on each new event so the cache window is always measured from the latest event.
+    const key: WaiterKey = `${documentId}:${changeType}`;
+    clearTimeout(recentEvents.get(key));
+    recentEvents.set(
+      key,
+      setTimeout(() => recentEvents.delete(key), recentEventsTtlMs),
+    );
+
+    // Notify any pending waiters
+    const waiters = pendingWaiters.get(key) ?? [];
+    waiters.forEach((resolve) => resolve());
+    pendingWaiters.delete(key);
 
     let currentPreviewElement = await snap.getPreviewElement();
 
@@ -91,10 +111,47 @@ export namespace WsProvider {
       ws.removeEventListener('open', handleWsOpen);
       ws.removeEventListener('error', handleWsError);
       ws.removeEventListener('close', handleWsClose);
-
       ws.close();
     }
     ws = null;
+  };
+
+  export const waitForDocumentEvent = async (
+    documentId: string,
+    operationTypes: CaaSEvent['operationType'] | Array<CaaSEvent['operationType']>,
+    timeoutMs: number,
+  ): Promise<void> => {
+    const types = Array.isArray(operationTypes) ? operationTypes : [operationTypes];
+
+    // Resolve immediately if event already arrived recently
+    const alreadyReceived = types.some((op) => recentEvents.has(`${documentId}:${op}`));
+    if (alreadyReceived) {
+      debug && console.debug(`Event for '${documentId}' already received, resolving immediately`);
+      return Promise.resolve();
+    }
+
+    return new Promise((resolve) => {
+      types.forEach((operationType) => {
+        const key: WaiterKey = `${documentId}:${operationType}`;
+        const existing = pendingWaiters.get(key) ?? [];
+        existing.push(resolve);
+        pendingWaiters.set(key, existing);
+      });
+
+      setTimeout(() => {
+        types.forEach((operationType) => {
+          const key = `${documentId}:${operationType}`;
+          const waiters = pendingWaiters.get(key);
+          if (waiters) {
+            const index = waiters.indexOf(resolve);
+            if (index !== -1) waiters.splice(index, 1);
+            if (waiters.length === 0) pendingWaiters.delete(key);
+          }
+        });
+        debug && console.debug(`Timeout after ${timeoutMs}ms waiting for [${types.join(', ')}] on '${documentId}', resolving anyway`);
+        resolve();
+      }, timeoutMs);
+    });
   };
 }
 

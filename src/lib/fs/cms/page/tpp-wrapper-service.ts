@@ -86,12 +86,29 @@ export class TppWrapperService {
 
   async onRerenderView(handler: () => void): Promise<void> {
     const snap = await this.TPP_SNAP;
-    snap.onRerenderView(handler);
+    snap?.onRerenderView(handler);
   }
 
   async onRequestPreviewElement(handler: (previewId: string) => void): Promise<void> {
     const snap = await this.TPP_SNAP;
     await snap?.onRequestPreviewElement(handler);
+  }
+
+  async onContentChange(
+    handler: ($node: HTMLElement | null, previewId: string, content: any) => any | Promise<void>
+  ): Promise<void> {
+    const snap = await this.TPP_SNAP;
+    snap?.onContentChange(handler);
+  }
+
+  async onBeforeRerenderView(handler: (previewId: string, language: string) => any | Promise<void>): Promise<void> {
+    const snap = await this.TPP_SNAP;
+    snap?.onBeforeRerenderView(handler);
+  }
+
+  async onBeforeRequestPreviewElement(handler: (previewId: string, language: string) => any | Promise<void>): Promise<void> {
+    const snap = await this.TPP_SNAP;
+    snap?.onBeforeRequestPreviewElement(handler);
   }
 
   async triggerRerenderView(): Promise<void> {
